@@ -1,0 +1,19 @@
+<div class="well">
+	<p class='assert'>{{assert}} </p>
+	<hr>
+	<div ng-switch on="plop">
+        <div ng-switch-when="iframe">
+        	<div class="content">
+            	<iframe ng-src="{{site}}" width="640" height="{{height}}" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+        <div ng-switch-default>
+            <!-- code to render the regular video block -->
+            
+        </div>
+    </div>
+
+	<div class="page">
+		<a href="{{cite}}" target="_blank"><span class="glyphicon glyphicon-link"></span></a>
+	</div>
+</div>

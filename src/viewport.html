@@ -1,0 +1,9 @@
+<div ng-repeat="i in decks | searchFor:searchString">
+		<add-slide 
+				assert={{i.assert}}
+				website={{i.site}}
+				height={{i.height}}
+				cite={{i.cite}}
+		</add-slide>
+</div>
+
