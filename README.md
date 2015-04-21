@@ -23,4 +23,4 @@ lecturejs
   </body>
 <html></textarea></code></pre>
 
-<p><img src="img/example.png"></p>
+<p><img src=""></p>
