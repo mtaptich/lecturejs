@@ -13,6 +13,12 @@
     <div class="content" ng-if="view == 'img'">
         <img ng-src="{{link}}">
     </div>
+    <div class="content" ng-if="view == 'video'">
+
+        <iframe id="ytplayer" type="text/html" width="700" height="393.8"  style="position:relative;z-index:1 !important;" 
+		src={{video}}
+		frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <div ng-if="view == 'code'">
     	<live-code base="true"><textarea>{{code}}</textarea></live-code>

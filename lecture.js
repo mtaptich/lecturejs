@@ -50,9 +50,11 @@ app.directive('sL',  function(){
 			d.top = attr.top || undefined;
 			d.link = attr.link || undefined;
 			d.dv = attr.dv || undefined;
+			d.video = attr.video || undefined;
 			d.code = attr.code || undefined;
 		    d.cite = attr.cite || attr.link;
 		    d.cite = attr.dv || attr.link;
+		    d.cite = attr.video || attr.link;
 		    d.assert = attr.assert;
 			scope.decks.push(d)
 			scope.$apply;
@@ -74,12 +76,16 @@ app.directive('addSlide', function($compile, $sce, $timeout) {
   	scope.bottom = attr.bottom;
   	scope.top = attr.top;
   	scope.link = $sce.trustAsResourceUrl(attr.link) || undefined; 
-  	scope.dv = $sce.trustAsResourceUrl(attr.dv) || undefined; 
+  	scope.dv = $sce.trustAsResourceUrl(attr.dv) || undefined;
+  	scope.video = $sce.trustAsResourceUrl(attr.video.replace("watch?v=", "v/")+"&output=embed") || undefined;  
   	scope.code = attr.code || undefined; 
 
   	if (attr.link) scope.view = "img"
   	if (attr.dv) scope.view = "iframe"
   	if (attr.code) scope.view = "code"
+  	if (attr.video) scope.view = "video"
+
+  	console.log(scope.view)
   	
     // Set citation
     scope.cite = attr.cite || 'na';
@@ -197,6 +203,8 @@ app.directive('liveCode', function($timeout){
 		link: link
 	};
 });
+
+
 
 
 
