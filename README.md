@@ -3,7 +3,7 @@ lecturejs
 
 <em>An interactive way to give lectures, presentations, or class handouts. </em>
 
-<p>Lecturejs was developed to support the <a href="http://writing.engr.psu.edu/slides.html">assertion-evidence approach</a> to teaching STEM material. Each slide consists of an assertion (ex. "The number 8 is not a prime number.") and visual evidence to support this position (ex., "<em>8 balls spit equally into two groups.</em>"). Lecturejs allows lecturers to use images, data visualization, YouTube videos, and live code as evidence for assertions. </p>
+<p>Lecturejs was developed to support the <a href="http://writing.engr.psu.edu/slides.html">assertion-evidence approach</a> to teaching STEM material. Each slide consists of an assertion (ex. "The number 8 is not a prime number.") and visual evidence to support this position (ex., "<em>8 balls spit equally into two groups.</em>"). Lecturejs allows lecturers to use images, data visualizations, YouTube videos, and live code examples as evidence for assertions. </p>
 
 <p>A lecturejs template looks like this:</p>
 
