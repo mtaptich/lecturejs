@@ -23,4 +23,5 @@ lecturejs
   </body>
 <html></textarea></code></pre>
 
-<p><img src=""></p>
+<p> This slide becomes:</p>
+<p><img src="https://raw.githubusercontent.com/mtaptich/lecturejs/master/img/slideexample.png" style="max-width:100%;"></p>
