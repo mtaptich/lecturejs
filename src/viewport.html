@@ -1,9 +1,13 @@
 <div ng-repeat="i in decks | searchFor:searchString">
 		<add-slide 
 				assert={{i.assert}}
-				website={{i.site}}
+				link={{i.link}}
+				dv={{i.dv}}
+				code={{i.code}}
 				height={{i.height}}
 				cite={{i.cite}}
+				bottom={{i.bottom}}
+				top={{i.top}}
 		</add-slide>
 </div>
 

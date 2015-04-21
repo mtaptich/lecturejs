@@ -1,19 +1,33 @@
-<div class="well">
-	<p class='assert'>{{assert}} </p>
+<div class="well" >
+	<p class='assert' ng-bind-html='assert'>{{assert}} </p>
 	<hr>
-	<div ng-switch on="plop">
-        <div ng-switch-when="iframe">
-        	<div class="content">
-            	<iframe ng-src="{{site}}" width="640" height="{{height}}" frameborder="0" scrolling="no"></iframe>
-            </div>
-        </div>
-        <div ng-switch-default>
-            <!-- code to render the regular video block -->
-            
-        </div>
+	<div class="row">
+	    <div class="col-xs-12 content top">
+	    	<h3 ng-bind-html='top'>{{top}}</h3>
+	    </div>
+	</div>
+
+    <div class="content" ng-if="view == 'iframe'">
+        <iframe ng-src="{{dv}}" width="640px" height="{{height}}" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div class="content" ng-if="view == 'img'">
+        <img ng-src="{{link}}">
     </div>
 
-	<div class="page">
-		<a href="{{cite}}" target="_blank"><span class="glyphicon glyphicon-link"></span></a>
+    <div ng-if="view == 'code'">
+    	<live-code base="true"><textarea>{{code}}</textarea></live-code>
+    </div>
+
+    <div class="row">
+	    <div class="col-xs-12 content bottom">
+	    	<h3 ng-bind-html='bottom'>{{bottom}}</h3>
+	    </div>
 	</div>
+
+
+	<!-- Citation for the page-->
+	<div class="page" >
+        <a href="{{cite}}" target="_blank" ng-if="cite != 'na'"><span class="glyphicon glyphicon-share-alt"></span></a>
+	</div>
+
 </div>
