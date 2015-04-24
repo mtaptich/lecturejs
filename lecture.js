@@ -1,6 +1,7 @@
 var app = angular.module('Lectureapp', ['ui.bootstrap', 'ngSanitize'])
 
-app.controller('wells', ['$scope', function($scope) {
+app.controller('wells', ['$scope', '$window', function($scope, $window) {
+  angular.element($window).on('resize', function(){ $scope.$apply()});
   $scope.decks = [];
   $scope.assertions = [];
 
@@ -8,15 +9,10 @@ app.controller('wells', ['$scope', function($scope) {
   $scope.addlivecode = function(){
 		$scope.lc+=1;
   }
+
+
 }]);
 
-app.factory('Page', function() {
-   var title = 'Lecture.js';
-   return {
-     title: function() { return title; },
-     setTitle: function(newTitle) { title = newTitle }
-   };
-});
 
 app.directive('doNotTouch', function() {
   return {
@@ -32,6 +28,7 @@ app.directive('addTitle', function() {
   function link(scope, el, attr) {
     var label = attr.label
     scope.label = attr.label
+
   }
   return {
     link: link,
@@ -68,6 +65,8 @@ app.directive('addSlide', function($compile, $sce, $timeout) {
   	// Set Searchable Assertion 
     scope.assert = attr.assert
     scope.assertions.push(attr.assert);
+
+    //console.log(scope.assertions)
   	
   	// Set Styles
   	scope.height = attr.height || 400;
@@ -84,14 +83,14 @@ app.directive('addSlide', function($compile, $sce, $timeout) {
   	if (attr.dv) scope.view = "iframe"
   	if (attr.code) scope.view = "code"
   	if (attr.video) scope.view = "video"
-
-  	console.log(scope.view)
   	
     // Set citation
     scope.cite = attr.cite || 'na';
 
     // Update global scope
     scope.$apply
+
+
   }
   return {
     link: link,
@@ -204,6 +203,123 @@ app.directive('liveCode', function($timeout){
 	};
 });
 
+// Three small bars
+app.directive('barChartSm', function($compile, $sce) {
+	return {
+	  restrict: 'E',
+	  replace: true,
+	  scope: {
+	    dataset: '='
+	  },
+	  template: '<svg ng-attr-height="{{graph.height}}" ng-attr-width="{{graph.width}}"><rect ng-repeat="data in dataset track by $index" ng-attr-width="{{width()}}" ng-attr-height="{{height(data)}}" ng-attr-x="{{x($index)}}" ng-attr-y="{{graph.height - height(data)}}" fill="{{color}}"></rect><text ng-repeat="data in dataset track by $index" ng-attr-width="{{width()}}" ng-attr-height="{{height(data)}}" ng-attr-x="{{width()}}" ng-attr-y="{{graph.height - height(data)}}" fill="#000" dy="1em" style="font-size: 18px">{{the_text}}</text></svg>',
+	  link: function(scope, element, attrs) {
+	    var padding = 40;
+	    var val = Math.abs(attrs.val) || 1;
+	    scope.graph = {
+	      width: 140,
+	      height: 24
+	    }
+
+	    scope.color = attrs.color;
+
+	    var scale = d3.scale.linear()
+	        .domain([attrs.min,attrs.max])
+	        .range([0, scope.graph.width-padding]);
+
+	    scope.dataset = [val];
+
+	    scope.width = function() {
+	      scope.color = attrs.color;
+	      scope.the_text = Math.round(attrs.val);
+	      return scale(Math.abs(attrs.val));
+	    }
+
+	    scope.height = function(data) {
+	      
+	      var max = Math.max.apply(null, scope.dataset);
+	      return data / max * scope.graph.height;
+	    }
+
+	    scope.x = function(index) {
+	      return index * padding + index * scope.width()
+	    }
+	  }
+	}
+});
+
+app.directive('lineChartSm', function($timeout){
+    
+    var uniqueId = 1;
+    // Runs during compile
+    return {
+      // name: '',
+      // priority: 1,
+      // terminal: true,
+      scope: true, // {} = isolate, true = child, false/undefined = no change
+      // controller: function($scope, $element, $attrs, $transclude) {},
+      // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+      restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+      template: '<svg ng-attr-height="{{graph.height}}" ng-attr-width="{{graph.width}}" id="{{uniqueId }}"></svg>',
+      // replace: true,
+      // transclude: true,
+      // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+      link: function($scope, iElm, attrs, controller) {
+        var padding = 40, fontsize = 16;
+        $scope.graph = {
+          width: 150,
+          height: 60
+        }
+
+        $scope.data = JSON.parse(attrs.data);
+        $scope.uniqueId = "lgsm"+uniqueId++;
+
+        var color = attrs.color || "#777777";
+
+        var x = d3.time.scale()
+            .range([0+padding, $scope.graph.width-padding])
+            .domain([0,3])
+
+        var y = d3.scale.linear()
+            .range([$scope.graph.height-5, fontsize+5])
+            .domain(d3.extent($scope.data, function(d) { return d; }));
+
+        var line = d3.svg.line()
+            .x(function(d,i) { return x(i); })
+            .y(function(d) { return y(d); });
+
+        $timeout(function(){
+          chart = d3.select('#'+$scope.uniqueId )
+          
+          chart.append("path")
+                .datum($scope.data)
+                .attr("class", "line")
+                .attr("d", line)
+                .style("fill", "none")
+                .style("stroke", color)
+                .style("stroke-width", "2px")
+
+          chart.selectAll("circle").data($scope.data).enter().append("circle")
+                .attr('r',4)
+                .attr('cx', function(d,i){ return x(i)})
+                .attr('cy', function(d){ return y(d)})
+                .style("fill", d3.rgb(color).darker(-0.7))
+
+          chart.selectAll("text").data($scope.data).enter().append("text")
+                .attr('x', function(d,i){ return x(i)})
+                .attr('y', function(d){ return y(d)})
+                .attr('dy', function(d, i){ if(i==1){return "-0.5em"}else{return "0"}})
+                .attr('dx', function(d, i){ if(i==0 && d>1){return "-1em"} else if(i==0 && d>0){return "-1.2em"} else if(i==0){return "-1.4em"} else if(i==2 && d>1){return "1em"} else if(i==2 && d>0){return "1.2em"}  else if(i==2){return "1em"}else{return "0.25em"}})
+                .text(function(d){ 
+                  if(d<1 && d>-1){return Math.round(d*100)/100}
+                  else if (d<10){ return Math.round(d*10)/10}
+                  else{ return Math.round(d)}})
+                .style("text-anchor", "middle")
+                .style('font-size', fontsize)
+
+        })   
+      }
+    };
+});
 
 
 

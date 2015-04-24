@@ -17,10 +17,38 @@ body {
 
 }
 
+@media (max-width: 1170px) {
+    body {
+      width: 900px;
+    }
+}
+
+@media (max-width: 970px) {
+    body {
+      width: 750px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+      width: 680px;
+    }
+    .bar{
+      width: 86% !important;
+    }
+    img, iframe{
+      width: 100% !important;
+    }
+}
+
 svg text {
   font-family: "Lato", "PT Serif", serif;
 }
 
+img{
+  width: 95%;
+  margin: 0, auto;
+}
 
 p {
   font-size: 20px;
@@ -337,4 +365,66 @@ input[type='submit'] {
 .axis line {
   fill: none;
   stroke: rgba(0, 0, 0, 0.1);
+}
+
+.point {
+    fill: #000;
+}
+
+.locateslide{
+  position: fixed;
+  z-index: 100;
+  left: 10px;
+  top: 130px;
+  height: calc(100% - 220px);;
+  width: auto;
+  overflow: scroll;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #f1f1f1;
+  background-color: #eee;
+  opacity: 0.33;
+  transition: margin-bottom 0.5s ease; 
+  -o-transition: margin-bottom 0.5s ease;
+  -ms-transition: margin-bottom 0.5s ease;
+  -moz-transition: margin-bottom 0.5s ease;
+  -webkit-transition: margin-bottom 0.5s ease;
+
+  -webkit-box-shadow: 0px 5px 30px 0px rgba(85, 79, 65, 0.1);
+  -moz-box-shadow:    0px 5px 30px 0px rgba(85, 79, 65, 0.1);
+  box-shadow:         0px 5px 30px 0px rgba(85, 79, 65, 0.1);
+  
+}
+
+.locateslide:hover{
+  opacity: 1;
+
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.navcircle{
+  opacity: 0.2;
+}
+
+.navcircle:hover{
+  opacity: 1;
+}
+
+
+
+.locatecircle{
+  fill:#fff;
+  stroke: #bbbbbb;
+  stroke-width: 2px;
+}
+
+.locatetext{
+  text-anchor: middle; 
+  font-weight: bold;
+  font-size: 20px
+}
+.locatetext:hover {
+    cursor: default;
 }
